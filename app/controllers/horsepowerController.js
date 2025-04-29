@@ -55,7 +55,18 @@ horsepowers = [{
 const getAllHorsepowers = async (req, res) => {
     const horsepowers = await Horsepowers.find({});
     console.log('GET ALL cars')
-        res.status(200).json({ message: 'Get ALL successful', data: horsepowers, success: true});
+    if (!horsepowers || horsepowers.length === 0) {
+        return res.status(404).json({ 
+            message: 'No horsepowers found', 
+            success: false, 
+            data: horsepowers
+        });         
+    }
+    res.status(200).json({ 
+        message: 'Get ALL successful', 
+        data: horsepowers, 
+        success: true
+    });
     };
 
 //get car by id
@@ -64,11 +75,18 @@ const getHorsepowerById = async (req, res) => {
     const horsepower = await Horsepowers.findById(id);
     console.log('ID is:', id);
 
+    if (!horsepower) {
+        return res.status(404).json({ 
+            message: 'Horsepower not found', 
+            success: false, 
+            data: horsepower
+        });
+    }
     res.status(200).json({ 
-    message: 'Get by Id successful', 
-    id: id, 
-    data: horsepower, 
-    success: true
+        message: 'Get by ID successful', 
+        id: id, 
+        data: horsepower, 
+        success: true
     });
 };
 
@@ -98,6 +116,13 @@ const updateHorsepowerById = async (req, res) => {
     const horsepower = await Horsepowers.findByIdAndUpdate(id, req.body,{ new: true });
     console.log('ID is:', id);
     
+    if (!horsepower) {
+        return res.status(404).json({ 
+            message: 'Horsepower not found', 
+            success: false, 
+            data: horsepower
+        });
+    }
     res.status(200).json({ 
         message: 'Update successful', 
         id: id, 
@@ -108,16 +133,25 @@ const updateHorsepowerById = async (req, res) => {
 
 //delete car by id
 const deleteHorsepowerById = async (req, res) => {
-    const {id} = (req.params.id);
+    const id = (req.params.id);
     const horsepower = await Horsepowers.findByIdAndDelete(id, req.body, { new: true });
     console.log('ID is:', id);
+    
+    if (!horsepower) {
+        return res.status(404).json({ 
+            message: 'Horsepower not found', 
+            success: false, 
+            data: horsepower
+        });     
 
+    }
     res.status(200).json({ 
-        message: 'Delete successful', 
+        message: 'Update successful', 
         id: id, 
-        data: horsepowers, 
+        data: horsepower, 
         success: true
     });
+    
     };
 
     module.exports = {

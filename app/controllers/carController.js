@@ -56,6 +56,20 @@ const getAllCars = async (req, res) => {
     const cars = await Cars.find({});
     console.log('GET ALL cars')
         res.status(200).json({ message: 'Get ALL successful', data: cars, success: true});
+
+        if (!cars || cars.length === 0) {
+            return res.status(404).json({ 
+                message: 'No cars found', 
+                success: false, 
+                data: cars
+            });
+        }
+        res.status(200).json({ 
+            message: 'Get ALL successful', 
+            data: cars, 
+            success: true
+        });
+
     };
 
 //get car by id
@@ -64,11 +78,18 @@ const getCarById = async (req, res) => {
     const car = await Cars.findById(id);
     console.log('ID is:', id);
 
+    if (!car) {
+        return res.status(404).json({ 
+            message: 'Car not found', 
+            success: false, 
+            data: car
+        });
+    }
     res.status(200).json({ 
-    message: 'Get by Id successful', 
-    id: id, 
-    data: car, 
-    success: true
+        message: 'Get by Id successful', 
+        id: id, 
+        data: car, 
+        success: true
     });
 };
 
@@ -98,6 +119,14 @@ const updateCarById = async (req, res) => {
     const car = await Cars.findByIdAndUpdate(id, req.body, { new: true });
     console.log('ID is:', id);
     
+    if (!car) {
+        return res.status(404).json({ 
+            message: 'Car not found', 
+            success: false, 
+            data: car
+        });     
+
+    }
     res.status(200).json({ 
         message: 'Update successful', 
         id: id, 
@@ -108,17 +137,24 @@ const updateCarById = async (req, res) => {
 
 //delete car by id
 const deleteCarById = async (req, res) => {
-    const {id} = (req.params.id);
+    const id = (req.params.id);
     const car = await Cars.findByIdAndDelete(id, req.body, { new: true });
-    console.log('ID is:', id);
+    console.log('ID is:', id);  
     
+    if (!car) {
+        return res.status(404).json({ 
+            message: 'Car not found', 
+            success: false, 
+            data: car
+        });
+    }
     res.status(200).json({ 
         message: 'Delete successful', 
         id: id, 
-        data: cars, 
+        data: car, 
         success: true
     });
-    };
+};
 
     module.exports = {
         getAllCars,
