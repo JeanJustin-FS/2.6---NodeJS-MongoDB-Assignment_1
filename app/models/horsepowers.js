@@ -2,26 +2,43 @@ const mongoose = require('mongoose');
 
 const horsepowerSchema = new mongoose.Schema({
 
-id:{    
+    make: {
+    type: String,
+    required: [true, 'You need to add a make']
+    },
+    model: {
+    type: String,
+    required: [true, 'You need to add a model']
+    },
+    year: {
     type: Number,
-},
-make: {
-    type: String,
-},
-model: {
-    type: String,
-}, 
-year: {
+    required: [true, 'You need to add a year']
+    },
+    horsepower: {
     type: Number,
-},  
-horsepower: {
-    type: String,
-},
-completed: {
+    required: [true, 'You need to add a horsepower'],
+    set: value => {
+        if (typeof value === 'string') {
+        return parseInt(value.replace(/\D/g, ''));
+        }
+        return value;
+    }
+    },
+    completed: {
     type: Boolean,
-}
+    required: [true, 'Path `completed` is required.'],
+    default: false
+    }, 
+
+    carDetails: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'CarDetail',
+        required: true
+    }]
+    
 }, {
-    timestamps: true,
+    timestamps: true
+
 });
 
 module.exports = mongoose.model('Horsepower', horsepowerSchema);
