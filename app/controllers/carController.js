@@ -1,7 +1,6 @@
 const Cars = require('../models/cars')
 const Car = require('../models/horsepowers')
 
-
 cars = []
 
 //get all cars
